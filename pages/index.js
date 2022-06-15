@@ -3,8 +3,16 @@ import Image from 'next/image';
 import Banner from '../components/banner';
 import Card from '../components/card';
 import styles from '../styles/Home.module.css';
+import coffeeStoresData from '../data/coffee-stores.json';
 
-export default function Home() {
+export async function getStaticProps(context) {
+  return {
+    props: { coffeeStores: coffeeStoresData },
+  };
+}
+
+export default function Home(props) {
+  console.log('props', props);
   const handleOnBannerBtnClick = () => {
     console.log('hi banner btn');
   };
@@ -22,28 +30,27 @@ export default function Home() {
           handleOnClick={handleOnBannerBtnClick}
         />
         <div className={styles.heroImage}>
-          <Image src="/static/hero-image.png" width={700} height={300} />
+          <Image src="/static/hero-image.png" width={700} height={300} alt="" />
         </div>
-        <div className={styles.cardLayout}>
-          <Card
-            className={styles.card}
-            name="DarkHorse Coffee"
-            href="/coffee-store/darkhorse-coffee"
-            imgUrl="/static/hero-image.png"
-          />
-          <Card
-            className={styles.card}
-            name="DarkHorse Coffee"
-            href="/coffee-store/darkhorse-coffee"
-            imgUrl="/static/hero-image.png"
-          />
-          <Card
-            className={styles.card}
-            name="DarkHorse Coffee"
-            href="/coffee-store/darkhorse-coffee"
-            imgUrl="/static/hero-image.png"
-          />
-        </div>
+
+        {props.coffeeStores.length > 0 && (
+          <>
+            <h2 className={styles.heading2}>Toronto stores</h2>
+            <div className={styles.cardLayout}>
+              {props.coffeeStores.map((coffeeStore) => {
+                return (
+                  <Card
+                    key={coffeeStore.id}
+                    className={styles.card}
+                    name={coffeeStore.name}
+                    href={`/coffee-store/${coffeeStore.id}`}
+                    imgUrl={coffeeStore.imgUrl}
+                  />
+                );
+              })}
+            </div>
+          </>
+        )}
       </main>
     </div>
   );
