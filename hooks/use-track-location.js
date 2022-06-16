@@ -8,7 +8,7 @@ const useTrackLocation = () => {
   const success = (position) => {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
-    setLatLong(`${latitude} ${longitude}`);
+    setLatLong(`${latitude},${longitude}`);
     setLocationErrorMsg('');
     setIsFindingLocation(false);
   };
@@ -35,13 +35,3 @@ const useTrackLocation = () => {
 };
 
 export default useTrackLocation;
-
-// useEffect(() => {
-//   async function setCoffeeStoresByLocation() {
-//         if (latLong) {
-//           // code
-//       }
-//   }
-
-//   setCoffeeStoresByLocation();
-//   },[latLong])
